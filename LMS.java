@@ -30,7 +30,7 @@ public class LMS {
 						boolean flag=true;
 						while(flag == true)
 						{
-							String [] adminoptions= {"ADD A NEW BOOK","ADD A NEW STUDENT","ISSUE A BOOK","RETURN A BOOK","LOGOUT","EXIT"};
+							String [] adminoptions= {"ADD A NEW BOOK","ADD A NEW STUDENT","ISSUE A BOOK","RETURN A BOOK","SHOW RECORDS","LOGOUT","EXIT"};
 							int opt=Util.oInput("LIBRARY MANAGEMENT SYSTEM", "SELECT ONE CHOICE", adminoptions);
 							switch(opt)
 							{
@@ -97,9 +97,21 @@ public class LMS {
 								int l=s.executeUpdate("update BOOK set Quantity = " + Integer.toString(cnt) + "where ISBN = " + ISBNNO);
 								break;
 							case 4:
-								flag=false;
+								ResultSet data=s.executeQuery("select r.student_id, s.name, r.isbn, r.issue_date, r.return_date from record r inner join student s on r.Student_id = s.student_id ;");
+								String all="\n ALL BOOKS \n";
+								int tot2=1;
+								while(data.next())
+								{
+									String h=Integer.toString(tot2);
+									all+= "\n" + h + ". " + "STUDENT ID: "+ data.getString("r.student_id") + "----" +"STUDENT_NAME: "+ data.getString("s.name") + "----" +"ISBN: "+data.getString("r.isbn") + "----"+"ISSUE_DATE: "+data.getString("r.issue_date")+"----"+"RETURN_DATE: "+data.getString("r.return_date")+"\n";
+									tot2++;
+								}
+								Util.display(all);
 								break;
 							case 5:
+								flag=false;
+								break;
+							case 6:
 								flg=flag=false;
 								break;
 							
